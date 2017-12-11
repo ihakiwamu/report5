@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EnemyTest {
+class EnemyTest {
     @Test
     public void attack() {
         int heroHP = 10;

@@ -46,11 +46,22 @@ public class Hero extends LivingThing{
      * attackに応じて乱数でダメージを算出し、hero.wounded()によりダメージ処理を実行。
      * @param e 攻撃対象
      */
-    /*public void attack(Enemy e){
-        int damage = (int)(Math.random() * attack);
-        System.out.printf("%sの攻撃！%sに%dのダメージを与えた！！\n", name, e.getName(), damage);
-        e.wounded(damage);
-    }*/
+    public void attack(LivingThing opponent){
+        if (!isDead()) {
+            int damage = (int) (Math.random() * getAttack() );
+            int critical=(int)(Math.random()*10);
+            if(damage==0) {
+                System.out.printf("%s攻撃！,,,だが、%sは攻撃を回避した！\n",getName(), opponent.getName());
+            }else if(critical<=3) {
+                damage*=2;
+                System.out.printf("%sの攻撃！会心の一撃！！%sに%dのダメージを与えた！！\n",getName(), opponent.getName(), damage);
+                opponent.wounded(damage);
+            }else {
+                System.out.printf("%sの攻撃！%sに%dのダメージを与えた！！\n", getName(), opponent.getName(), damage);
+                opponent.wounded(damage);
+            }
+        }
+    }
 
     /**
      * 自身へ攻撃されたときのダメージ処理をするメソッド。
@@ -59,7 +70,7 @@ public class Hero extends LivingThing{
      */
     public void wounded(int damage){
         setHitPoint(getHitPoint() - damage);
-        if( getHitPoint() < 0 ) {
+        if( getHitPoint() <= 0 ) {
             setDead(true);
             System.out.printf("%sは道半ばで力尽きてしまった。\n", getName());
         }

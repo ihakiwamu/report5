@@ -29,10 +29,10 @@ public class Enemy extends LivingThing{
         System.out.printf("%sのHPは%d。攻撃力は%dです。\n", name, maximumHP, attack);*/
     }
 
-/**
- * getterメソッドと同等。生死をboolean表現しているためメソッド名をisDead()とした。
- * @return boolean
- */
+    /**
+     * getterメソッドと同等。生死をboolean表現しているためメソッド名をisDead()とした。
+     * @return boolean
+     */
     /*public boolean isDead() {
         return dead;
     }
@@ -46,13 +46,22 @@ public class Enemy extends LivingThing{
  * attackに応じて乱数でダメージを算出し、hero.wounded()によりダメージ処理を実行。
  * @param hero 攻撃対象
  */
-    /*public void attack(Hero hero) {
-        if(hitPoint >= 0) {
-            int damage = (int) (Math.random() * attack);
-            System.out.printf("%sの攻撃！%sに%dのダメージを与えた！！\n", name, hero.getName(), damage);
-            hero.wounded(damage);
+    public void attack(LivingThing opponent) {
+        if (!isDead()) {
+            int damage = (int) (Math.random() * getAttack());
+            int critical=(int)(Math.random()*10);
+            if(damage==0) {
+                System.out.printf("%sの攻撃！,,,だが、%sは攻撃を回避した！\n",getName(), opponent.getName());
+            }else if(critical<=2) {
+                damage*=2;
+                System.out.printf("%sの攻撃！痛恨の一撃！！%sに%dのダメージを与えた！！\n",getName(), opponent.getName(), damage);
+                opponent.wounded(damage);
+            }else {
+                System.out.printf("%sの攻撃！%sに%dのダメージを与えた！！\n", getName(), opponent.getName(), damage);
+                opponent.wounded(damage);
+            }
         }
-    }*/
+    }
 
     /**
      * 自身へ攻撃されたときのダメージ処理をするメソッド。
@@ -61,7 +70,7 @@ public class Enemy extends LivingThing{
      */
     public void wounded(int damage){
         setHitPoint(getHitPoint() - damage);
-        if( getHitPoint() < 0 ) {
+        if( getHitPoint() <= 0 ) {
             setDead(true);
             System.out.printf("%sは倒れた。\n", getName());
         }
